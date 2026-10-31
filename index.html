@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JACarrascoDelCid.dev — Juan Antonio Carrasco del Cid, iOS Developer</title>
+  <title>Juan Antonio Carrasco del Cid — iOS Developer</title>
   <meta name="description" content="Juan Antonio Carrasco del Cid, desarrollador iOS en Sevilla. Aplicaciones nativas con Swift, SwiftUI y UIKit. Nuevas apps, modernización de las existentes y liderazgo técnico." />
 
   <!-- Tipografías: Space Grotesk (moderna) + JetBrains Mono (acento código) -->
@@ -894,7 +894,7 @@
     <div class="wrap barra">
       <a class="marca" href="#inicio">
         <span class="marca__txt">
-          <span class="marca__name">JACarrascoDelCid.dev</span>
+          <span class="marca__name">Juan Antonio Carrasco del Cid</span>
           <span class="marca__loc">
             <span class="marca__punto" aria-hidden="true"></span>
             Sevilla, España · <span class="marca__ok">Disponible para proyectos</span>
@@ -1078,6 +1078,10 @@
     }, { threshold: 0.2 });
 
     document.querySelectorAll('.animar').forEach((el) => observador.observe(el));
+
+    // (El desplazamiento suave al pulsar "Sobre mí" usa el scroll-behavior
+    // nativo del navegador; no se anima a mano para mantener la respuesta
+    // rápida que se siente mejor.)
 
     // ===== Ventanas modales: "copiar email" y "Cuéntame tu proyecto" =====
     const EMAIL = 'delcid.dev@gmail.com';
