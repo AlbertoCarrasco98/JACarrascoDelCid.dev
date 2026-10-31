@@ -262,6 +262,7 @@
 
     .menu-btn {
       display: none;
+      margin-left: auto; /* en móvil lo pega al borde derecho de la barra */
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--oscuro-borde);
       color: #fff;
@@ -828,6 +829,13 @@
     @media (max-width: 640px) {
       .menu-btn { display: inline-block; }
 
+      /* El nav queda vacío (su lista flota en absoluto): sin este ajuste se
+      come el empuje a la derecha y el botón hamburguesa queda a la izquierda */
+      .barra nav { margin-left: 0; }
+
+      /* Botones del panel de Hablemos centrados en la vista de columna */
+      .end .acts { justify-content: center; }
+
       .nav__list {
         position: absolute;
         top: 76px;
@@ -841,6 +849,20 @@
       }
       .nav__list.abierto { display: flex; }
       .nav__list a { padding: 12px 18px; text-align: left; }
+
+      /* Modal de Hablemos: ajustada a pantallas pequeñas, sin desbordar */
+      .email-pop__box {
+        padding: 34px 22px 30px;
+        gap: 16px;
+        max-width: calc(100vw - 48px);
+      }
+      .email-pop__row { max-width: 100%; }
+      .email-pop__dir {
+        min-width: 0;
+        flex: 1;
+        font-size: 0.92rem;
+        overflow-wrap: anywhere;
+      }
     }
 
     /* Accesibilidad: menos movimiento si el usuario lo prefiere */
@@ -1049,7 +1071,7 @@
           <p>¿Tienes un proyecto entre manos o necesitas experiencia en desarrollo iOS? Cuéntame qué necesitas y busquemos la mejor manera de hacerlo realidad.</p>
         </div>
         <div class="acts" style="margin-bottom: 0;">
-          <a class="btn btn--grad js-email" href="mailto:delcid.dev@gmail.com">Enviar un email →</a>
+          <a class="btn btn--grad js-email" href="mailto:delcid.dev@gmail.com">Enviar un email</a>
           <a class="btn btn--ghost" style="border-color: rgba(255, 255, 255, 0.2); color: #fff; background: rgba(255, 255, 255, 0.06);" href="tel:+34666666666">+34 666 66 66 66</a>
         </div>
       </div>
@@ -1067,6 +1089,13 @@
     const navList = document.getElementById('navList');
     menuBtn.addEventListener('click', () => navList.classList.toggle('abierto'));
     navList.addEventListener('click', () => navList.classList.remove('abierto'));
+
+    // Cierra el menú móvil al pulsar en cualquier parte fuera de él
+    document.addEventListener('click', (evento) => {
+      const enElMenu = navList.contains(evento.target);
+      const enElBoton = menuBtn.contains(evento.target) || evento.target === menuBtn;
+      if (!enElMenu && !enElBoton) navList.classList.remove('abierto');
+    });
 
     // ===== Animaciones al hacer scroll =====
     const observador = new IntersectionObserver((entradas) => {
