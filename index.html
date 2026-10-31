@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Juan Antonio Carrasco del Cid — iOS Developer</title>
+  <title>JACarrascoDelCid.dev — Juan Antonio Carrasco del Cid, iOS Developer</title>
   <meta name="description" content="Juan Antonio Carrasco del Cid, desarrollador iOS en Sevilla. Aplicaciones nativas con Swift, SwiftUI y UIKit. Nuevas apps, modernización de las existentes y liderazgo técnico." />
 
   <!-- Tipografías: Space Grotesk (moderna) + JetBrains Mono (acento código) -->
@@ -111,7 +111,8 @@
 
     .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
 
-    section { padding: 88px 0; }
+    /* Al saltar por los enlaces del menú, deja sitio para la cabecera fija */
+    section { padding: 88px 0; scroll-margin-top: 84px; }
 
     .sec__head {
       font-size: clamp(1.5rem, 3.2vw, 2rem);
@@ -559,8 +560,8 @@
       z-index: 1;
     }
 
-    .tl__item:nth-child(odd) .tl__dot  { right: -12px; }
-    .tl__item:nth-child(even) .tl__dot { left: -12px; }
+    .tl__item:nth-child(odd) .tl__dot  { right: -9px; }
+    .tl__item:nth-child(even) .tl__dot { left: -9px; }
 
     /* Entrada actual: punto relleno con el degradado vivo + halo */
     .tl__item--now .tl__dot {
@@ -765,6 +766,34 @@
 
     .email-pop__close:hover { color: var(--texto); }
 
+    /* Variante de la modal para "Cuéntame tu proyecto": lleva el texto de Hablemos */
+    /* Toque de color: título con el degradado azul→cian de la marca */
+    .contacto-pop__head {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .contacto-pop__txt {
+      color: var(--suave);
+      font-size: 0.95rem;
+      max-width: 360px;
+    }
+
+    /* Iconos de carta y teléfono dentro de las filas de contacto */
+    .email-pop__icon {
+      display: inline-flex;
+      align-items: center;
+      color: var(--cian);
+      flex-shrink: 0;
+    }
+
+    .email-pop__icon svg { width: 20px; height: 20px; }
+
     /* ============================================================
        8. ANIMACIONES AL HACER SCROLL
        ============================================================ */
@@ -790,7 +819,7 @@
         text-align: left;
       }
       .tl__item:nth-child(odd) .tl__dot,
-      .tl__item:nth-child(even) .tl__dot { left: -2px; right: auto; }
+      .tl__item:nth-child(even) .tl__dot { left: -1px; right: auto; }
 
       .end { flex-direction: column; text-align: center; padding: 40px 24px; }
     }
@@ -865,7 +894,7 @@
     <div class="wrap barra">
       <a class="marca" href="#inicio">
         <span class="marca__txt">
-          <span class="marca__name">Juan Antonio Carrasco del Cid</span>
+          <span class="marca__name">JACarrascoDelCid.dev</span>
           <span class="marca__loc">
             <span class="marca__punto" aria-hidden="true"></span>
             Sevilla, España · <span class="marca__ok">Disponible para proyectos</span>
@@ -876,7 +905,7 @@
       <nav aria-label="Principal">
         <ul class="nav__list" id="navList">
           <li><a href="#sobre-mi">Sobre mí</a></li>
-          <li><a href="#contacto" class="nav__cta">Cuéntame tu proyecto</a></li>
+          <li><a href="#contacto" class="nav__cta js-contacto">Cuéntame tu proyecto</a></li>
         </ul>
       </nav>
     </div>
@@ -913,7 +942,7 @@
       <p class="sec__say animar">Mi forma de entender el software.</p>
       <div class="sobre animar">
         <p>
-          Soy desarrollador iOS con más de 7 años de experiencia en el desarrollo de aplicaciones
+          Soy desarrollador iOS con más de 8 años de experiencia en el desarrollo de aplicaciones
           móviles y soluciones de software. A lo largo de mi trayectoria he trabajado en proyectos
           de gran envergadura en sectores como el bancario y el aeronáutico, participando en el
           desarrollo de funcionalidades complejas y en la evolución de aplicaciones con altos
@@ -951,7 +980,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
           </span>
           <h3>Desarrollo iOS nativo</h3>
-          <p>Aplicaciones nativas con Swift, SwiftUI y UIKit: nuevas funcionalidades, pantallas complejas e integraciones con API REST listas para producción.</p>
+          <p>Aplicaciones nativas con Swift, SwiftUI y UIKit: nuevas funcionalidades, pantallas complejas e integraciones con API REST listas para producción</p>
         </article>
         <article class="card animar">
           <span class="card__n" aria-hidden="true">
@@ -959,7 +988,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
           </span>
           <h3>Arquitectura y calidad del software</h3>
-          <p>Busco soluciones técnicas bien fundamentadas, con especial atención a la organización del código, la mantenibilidad y la evolución del proyecto a largo plazo.</p>
+          <p>Busco soluciones técnicas bien fundamentadas, con especial atención a la organización del código, la mantenibilidad y la evolución del proyecto a largo plazo</p>
         </article>
         <article class="card animar">
           <span class="card__n" aria-hidden="true">
@@ -967,7 +996,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </span>
           <h3>Liderazgo técnico</h3>
-          <p>Toma de decisiones de ingeniería, planificación técnica, revisiones de código y coordinación con equipos y clientes para garantizar una entrega continua.</p>
+          <p>Toma de decisiones de ingeniería, planificación técnica, revisiones de código y coordinación con equipos y clientes para garantizar una entrega continua</p>
         </article>
       </div>
     </section>
@@ -975,7 +1004,7 @@
     <!-- ============ EXPERIENCIA — LÍNEA DE TIEMPO ============ -->
     <section class="sec" id="experiencia">
       <h2 class="sec__head animar">Experiencia</h2>
-      <p class="sec__say animar">Mi trayectoria profesional, de lo más reciente a lo más antiguo.</p>
+      <p class="sec__say animar">Mi trayectoria profesional: de lo más reciente a lo más antiguo.</p>
       <div class="tl">
         <article class="tl__item tl__item--now animar">
           <span class="tl__dot" aria-hidden="true"></span>
@@ -1016,7 +1045,7 @@
     <section class="sec" id="contacto">
       <div class="end animar">
         <div>
-          <h2>Hablemos</h2>
+          <h2>¡Hablemos!</h2>
           <p>¿Tienes un proyecto entre manos o necesitas experiencia en desarrollo iOS? Cuéntame qué necesitas y busquemos la mejor manera de hacerlo realidad.</p>
         </div>
         <div class="acts" style="margin-bottom: 0;">
@@ -1050,16 +1079,18 @@
 
     document.querySelectorAll('.animar').forEach((el) => observador.observe(el));
 
-    // ===== Ventana modal de "copiar email" =====
+    // ===== Ventanas modales: "copiar email" y "Cuéntame tu proyecto" =====
     const EMAIL = 'delcid.dev@gmail.com';
-    let emailPop = null;
+    const TELEFONO = '+34 666 66 66 66';
+    let popAbierta = null; // la modal que esté visible ahora mismo (o ninguna)
 
-    function cerrarEmailPop() {
-      if (emailPop) { emailPop.remove(); emailPop = null; }
+    function cerrarPop() {
+      if (popAbierta) { popAbierta.remove(); popAbierta = null; }
     }
 
-    function abrirEmailPop() {
-      cerrarEmailPop();
+    // Crea la ventana modal con el mismo look para las dos y devuelve sus piezas
+    function crearPop(contenido) {
+      cerrarPop();
       const pop = document.createElement('div');
       pop.className = 'email-pop';
       pop.setAttribute('role', 'dialog');
@@ -1067,54 +1098,104 @@
       pop.innerHTML =
         '<div class="email-pop__box">' +
         '  <button type="button" class="email-pop__close" aria-label="Cerrar">✕</button>' +
-        '  <p class="email-pop__title">Escríbeme a</p>' +
-        '  <div class="email-pop__row">' +
-        '    <span class="email-pop__dir">' + EMAIL + '</span>' +
-        '    <button type="button" class="email-pop__copy" aria-label="Copiar el email" title="Copiar el email">' +
-        '      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
-        '    </button>' +
-        '  </div>' +
+        contenido +
         '</div>';
       document.body.appendChild(pop);
-      emailPop = pop;
+      popAbierta = pop;
+      pop.querySelector('.email-pop__close').addEventListener('click', cerrarPop);
+      return pop;
+    }
 
-      pop.querySelector('.email-pop__close').addEventListener('click', cerrarEmailPop);
+    const ICONO_COPIAR =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
 
-      // Copiar al portapapeles (con respaldo para navegadores antiguos)
+    const ICONO_OK =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+    const ICONO_CARTA =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+
+    const ICONO_TELEFONO =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
+
+    // Fila tipo "pill" con un texto, su icono opcional y su botoncito de copiar
+    function filaCopiar(texto, icono) {
+      return (
+          '  <div class="email-pop__row">' +
+          (icono
+            ? '    <span class="email-pop__icon" aria-hidden="true">' + icono + '</span>'
+            : '') +
+          '    <span class="email-pop__dir">' + texto + '</span>' +
+          '    <button type="button" class="email-pop__copy" aria-label="Copiar" title="Copiar">' +
+          ICONO_COPIAR +
+          '    </button>' +
+          '  </div>');
+    }
+
+    // Copia el texto al portapapeles (con respaldo para navegadores antiguos)
+    function prepararCopiar(pop, texto) {
       const copiar = pop.querySelector('.email-pop__copy');
       copiar.addEventListener('click', async () => {
         try {
-          await navigator.clipboard.writeText(EMAIL);
+          await navigator.clipboard.writeText(texto);
         } catch {
           const campo = document.createElement('textarea');
-          campo.value = EMAIL;
+          campo.value = texto;
           document.body.appendChild(campo);
           campo.select();
           document.execCommand('copy');
           campo.remove();
         }
         copiar.classList.add('is-ok');
-        copiar.innerHTML =
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+        copiar.innerHTML = ICONO_OK;
         copiar.setAttribute('title', '¡Copiado!');
-        setTimeout(cerrarEmailPop, 1500);
+        setTimeout(cerrarPop, 1500);
       });
+    }
+
+    // Modal 1: al pulsar "Enviar un email"
+    function abrirEmailPop() {
+      const pop = crearPop(
+          '  <p class="email-pop__title">Escríbeme a</p>' +
+          filaCopiar(EMAIL, null));
+      prepararCopiar(pop, EMAIL);
+    }
+
+    // Modal 2: al pulsar "Cuéntame tu proyecto" — la info del apartado de Hablemos
+    function abrirContactoPop() {
+      const pop = crearPop(
+          '  <h3 class="contacto-pop__head">¡Hablemos!</h3>' +
+          '  <p class="contacto-pop__txt">¿Tienes un proyecto entre manos o necesitas experiencia en desarrollo iOS? Cuéntame qué necesitas y busquemos la mejor manera de hacerlo realidad.</p>' +
+          filaCopiar(EMAIL, ICONO_CARTA) +
+          '  <div class="email-pop__row">' +
+          '    <span class="email-pop__icon" aria-hidden="true">' + ICONO_TELEFONO + '</span>' +
+          '    <span class="email-pop__dir">' + TELEFONO + '</span>' +
+          '  </div>');
+      prepararCopiar(pop, EMAIL);
     }
 
     document.querySelectorAll('.js-email').forEach((enlace) => {
       enlace.addEventListener('click', (evento) => {
         evento.preventDefault(); // que no arranque el gestor de correo directamente
-        if (emailPop) { cerrarEmailPop(); return; } // segundo clic = cerrar
+        if (popAbierta) { cerrarPop(); return; } // segundo clic = cerrar
         abrirEmailPop();
+      });
+    });
+
+    document.querySelectorAll('.js-contacto').forEach((enlace) => {
+      enlace.addEventListener('click', (evento) => {
+        evento.preventDefault(); // con la modal no hace falta saltar a la sección
+        if (popAbierta) { cerrarPop(); return; } // segundo clic = cerrar
+        abrirContactoPop();
       });
     });
 
     // Cerrar la ventana con Escape o al hacer clic en el fondo atenuado
     document.addEventListener('keydown', (evento) => {
-      if (evento.key === 'Escape') cerrarEmailPop();
+      if (evento.key === 'Escape') cerrarPop();
     });
     document.addEventListener('click', (evento) => {
-      if (emailPop && evento.target === emailPop) cerrarEmailPop();
+      if (popAbierta && evento.target === popAbierta) cerrarPop();
     });
 
     // ===== Año automático en el pie =====
