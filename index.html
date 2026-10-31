@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juan Antonio Carrasco del Cid — iOS Developer</title>
+  <meta name="description" content="Juan Antonio Carrasco del Cid, desarrollador iOS en Sevilla. Aplicaciones nativas con Swift, SwiftUI y UIKit. Nuevas apps, modernización de las existentes y liderazgo técnico." />
+
+  <!-- Tipografías: Space Grotesk (moderna) + JetBrains Mono (acento código) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       1. VARIABLES — tema oscuro al estilo de la web de referencia
+       ------------------------------------------------------------
+       Base          → negro grafito + superficies elevadas
+       Líneas finas  → bordes blancos de baja opacidad (1px)
+      ACIÓN/ACENTO  → azul eléctrico + cian, solo en momentos clave
+       ============================================================ */
+    :root {
+      /* base */
+      --fondo: #161616;                  /* negro grafito (fondo general)   */
+      --panel: #1D1D21;                  /* superficies: tarjetas, fichas   */
+      --panel-alto: #242429;             /* superficie elevada (hovers)     */
+      --borde: rgba(255, 255, 255, 0.12); /* líneas finas                    */
+      --fila-hover: rgba(255, 255, 255, 0.05);
+
+      /* paneles hundidos (cabecera, pie, panel de contacto) */
+      --oscuro: #0D0D10;
+      --oscuro-borde: rgba(255, 255, 255, 0.10);
+
+      /* texto */
+      --texto: #F2F2F4;                  /* blanco encendido                */
+      --suave: #A3A3AD;                  /* gris secundario                 */
+      --oscuro-suave: #A3A3AD;
+
+      /* acción / acento */
+      --azul: #1D4ED8;                  /* azul eléctrico más oscuro */
+      --cian: #06B6D4;                  /* cian eléctrico más oscuro */
+      --verde: #34D399;                 /* verde "disponible" (semaforo) */
+      --grad: linear-gradient(90deg, var(--azul), var(--cian));
+
+      --radio: 20px;
+      --maxw: 1080px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      background: var(--fondo);
+      color: var(--texto);
+      line-height: 1.65;
+      overflow-x: clip;
+      position: relative;
+    }
+
+    button { font: inherit; }
+
+    /* Halos muy sutiles de los colores vivos en el fondo (apenas 5%) */
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      z-index: -1;
+      width: 520px; height: 520px;
+      border-radius: 50%;
+      filter: blur(130px);
+      opacity: 0.10;
+      pointer-events: none;
+    }
+    body::before { background: var(--azul); top: -180px; left: -180px; }
+    body::after  { background: var(--cian); bottom: -200px; right: -180px; }
+
+    /* ============================================================
+       CIRCUITO DECORATIVO DE FONDO — cyberpunk sutil
+       Tráceras finas con esquinas y pads, fijas detrás del contenido
+       ============================================================ */
+    .circuito {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Tráceras neutras: casi imperceptibles */
+    .circuito .traza { opacity: 0.05; }
+
+    /* Traza eléctrica de la intro: se desplaza con el contenido (no fija) */
+    #inicio { position: relative; }
+
+    .traza-hero {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.12;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+    section { padding: 88px 0; }
+
+    .sec__head {
+      font-size: clamp(1.5rem, 3.2vw, 2rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      position: relative;
+      padding-left: 22px;
+    }
+
+    /* Detalle fino: regla vertical con el degradado junto a cada título */
+    .sec__head::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.18em;
+      bottom: 0.22em;
+      width: 2px;
+      border-radius: 999px;
+      background: var(--grad);
+    }
+
+    .sec__say { color: var(--suave); max-width: 620px; margin: 10px 0 44px; }
+
+    /* ============================================================
+       SOBRE MÍ
+       ============================================================ */
+    .sobre { max-width: 760px; }
+
+    .sobre p {
+      color: var(--suave);
+      font-size: 1.02rem;
+      margin-bottom: 18px;
+    }
+
+    .sobre p:last-child { margin-bottom: 0; }
+
+    /* Frase destacada: simple tint muy leve, sin marcar el texto en exceso */
+    .destacado {
+      font-weight: 600;
+      color: var(--texto);
+      background: rgba(6, 182, 212, 0.07);
+      border-radius: 4px;
+      padding: 2px 5px;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
+
+    /* ============================================================
+       2. CABECERA — OSCURA (25%, elemento de marca)
+       ============================================================ */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(13, 13, 16, 0.92);
+      border-bottom: 1px solid var(--oscuro-borde);
+    }
+
+    .barra {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* El menú se pega a la derecha; con el hamburguesa (menú absoluto) pasa igual */
+    .barra nav { margin-left: auto; }
+
+    .marca {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .marca__txt {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      line-height: 1.35;
+    }
+
+    .marca__name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: -0.01em;
+      color: #fff;
+    }
+
+    /* Ubicación + disponibilidad, ahora en la cabecera */
+    .marca__loc {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: var(--oscuro-suave);
+    }
+
+    .marca__punto {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--verde);
+      box-shadow: 0 0 8px rgba(52, 211, 153, 0.55);
+      animation: latido 2s infinite;
+    }
+
+    /* Verde de semáforo en el "Disponible" */
+    .marca__ok {
+      color: var(--verde);
+      font-weight: 500;
+    }
+
+    .nav__list {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .nav__list a {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--suave);
+      transition: color 0.2s, background 0.2s;
+    }
+
+    /* Enlace normal: texto desnudo, sin cárcaza de píldora alrededor */
+    .nav__list a:hover { color: #fff; }
+
+    /* CTA destacado: el botón que resalta sobre el resto del menú */
+    .nav__list a.nav__cta {
+      background: var(--grad);
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 4px 14px rgba(29, 78, 216, 0.35);
+    }
+
+    .nav__list a.nav__cta:hover {
+      box-shadow: 0 6px 18px rgba(6, 182, 212, 0.45);
+    }
+
+    .menu-btn {
+      display: none;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--oscuro-borde);
+      color: #fff;
+      border-radius: 12px;
+      width: 44px; height: 44px;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    /* ============================================================
+       3. HERO — PRESENTACIÓN CENTRADA
+       ============================================================ */
+    .intro {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    @keyframes latido { 50% { opacity: 0.4; } }
+
+    /* Nombre grande, centrado, con efecto glitch constante como la referencia */
+    .intro .name {
+      --glitch-a: rgba(255, 255, 255, 0.8);   /* capa blanca del glitch  */
+      --glitch-b: rgba(140, 140, 150, 0.9);   /* capa gris del glitch    */
+      font-size: clamp(1.9rem, 5.2vw, 3.4rem);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1.15;
+      color: var(--texto);
+      position: relative;
+      display: inline-block;
+      animation: glitch-skew 2.6s infinite linear;
+    }
+
+    /* Capas del glitch: el mismo texto, recortado y desplazado a ratos */
+    .intro .name::before,
+    .intro .name::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      clip-path: inset(100% 0 0 0); /* oculto fuera de los "picos" de la animación */
+    }
+
+    .intro .name::before {
+      color: var(--glitch-a);
+      animation: glitch-a 2.6s infinite steps(1);
+    }
+
+    .intro .name::after {
+      color: var(--glitch-b);
+      animation: glitch-b 2.6s infinite steps(1);
+    }
+
+    /* Ciclo más corto y con dos ráfagas por vuelta: efecto más continuado */
+    @keyframes glitch-a {
+      0%, 32%, 100% { clip-path: inset(100% 0 0 0); transform: none; }
+      33% { clip-path: inset(10% 0 70% 0); transform: translate(-4px, -1px); }
+      35% { clip-path: inset(55% 0 25% 0); transform: translate(5px, 1px); }
+      37% { clip-path: inset(80% 0 5% 0); transform: translate(-3px, 0); }
+      39% { clip-path: inset(100% 0 0 0); transform: none; }
+      60% { clip-path: inset(30% 0 50% 0); transform: translate(3px, -1px); }
+      62% { clip-path: inset(100% 0 0 0); }
+    }
+
+    @keyframes glitch-b {
+      0%, 10%, 100% { clip-path: inset(100% 0 0 0); transform: none; }
+      11% { clip-path: inset(65% 0 15% 0); transform: translate(4px, 1px); }
+      13% { clip-path: inset(5% 0 80% 0); transform: translate(-5px, 0); }
+      15% { clip-path: inset(100% 0 0 0); }
+      85% { clip-path: inset(40% 0 40% 0); transform: translate(3px, 1px); }
+      87% { clip-path: inset(100% 0 0 0); }
+    }
+
+    @keyframes glitch-skew {
+      0%, 30%, 100% { transform: none; }
+      32% { transform: skewX(-6deg); }
+      34% { transform: skewX(4deg) translateX(2px); }
+      36% { transform: none; }
+      58% { transform: skewX(3deg) translateX(-2px); }
+      60% { transform: none; }
+    }
+
+    /* Separador al estilo Vitor sin copiarlo: línea fina con rombo central */
+    .sep {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 260px;
+      margin: 26px auto;
+    }
+
+    .sep::before,
+    .sep::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+    }
+
+    /* Los extremos de la línea se desvanecen hacia el rombo */
+    .sep::before { background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5)); }
+    .sep::after  { background: linear-gradient(90deg, rgba(255, 255, 255, 0.5), transparent); }
+
+    /* Gemma central: rombo eléctrico con leve halo */
+    .sep__gema {
+      flex: none;
+      width: 9px;
+      height: 9px;
+      background: var(--azul);
+      box-shadow: 0 0 10px var(--azul);
+      transform: rotate(45deg);
+    }
+
+    /* Línea de tecnologías, al estilo de la web de referencia */
+    .skills {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.95rem;
+      color: var(--suave);
+    }
+
+    .skills::before {
+      content: "> ";
+      color: var(--azul);
+      font-weight: 700;
+    }
+
+    .skills::after {
+      content: "_";
+      color: var(--azul);
+      animation: cursor 1s steps(1) infinite;
+    }
+
+    @keyframes cursor { 50% { opacity: 0; } }
+
+    .acts { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+
+    /* Botón de acción: el "color de acción" (5%) */
+    .btn--grad {
+      background: var(--grad);
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(29, 78, 216, 0.35);
+    }
+    .btn--grad:hover { box-shadow: 0 12px 32px rgba(6, 182, 212, 0.35); }
+
+    .btn--ghost {
+      border: 1px solid var(--borde);
+      color: var(--texto);
+      background: var(--panel);
+      box-shadow: 0 2px 10px rgba(17, 24, 39, 0.04);
+    }
+    .btn--ghost:hover { border-color: var(--azul); color: var(--azul); }
+
+    /* Foto: marco cuadrado 200×200 con esquinas tipo "mira" (como la referencia) */
+    .frame {
+      position: relative;
+      display: inline-block;
+      padding: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      margin-bottom: 0;
+    }
+
+    .frame::before,
+    .frame::after {
+      content: "";
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--texto);
+    }
+
+    .frame::before { top: -4px; left: -4px; border-right: 0; border-bottom: 0; }
+    .frame::after  { bottom: -4px; right: -4px; border-left: 0; border-top: 0; }
+
+    .frame img {
+      display: block;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 0;
+    /* B/N suave, sin refuerzo de contraste (el contraste alto metía ruido en la foto) */
+      filter: grayscale(1) contrast(1.02) brightness(1.02);
+      transition: filter 0.4s;
+    }
+
+    /* Al pasar el ratón, la foto recupera el color y vibra un poco */
+    .frame:hover img {
+      filter: none;
+      animation: jitter 0.35s steps(2) 2;
+    }
+
+    @keyframes jitter {
+      50% { transform: translate(3px, -1px); }
+    }
+
+    /* ===== Espaciados de la intro ===== */
+    .intro .frame  { margin: 0 auto 28px; }
+
+    /* ============================================================
+       4. TARJETAS "QUÉ HAGO" — CLARAS (70%)
+       ============================================================ */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--borde);
+      border-radius: var(--radio);
+      padding: 30px 28px;
+      box-shadow: 0 2px 10px rgba(17, 24, 39, 0.04);
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(29, 78, 216, 0.5);
+      box-shadow: 0 14px 34px rgba(29, 78, 216, 0.12);
+    }
+
+    .card__n {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px; height: 52px;
+      border-radius: 16px;
+      background: var(--grad);
+      color: #fff;
+      margin-bottom: 18px;
+    }
+    .card__n svg { width: 26px; height: 26px; }
+
+    .card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
+    .card p { color: var(--suave); font-size: 0.92rem; }
+
+    /* ============================================================
+       5. EXPERIENCIA — LÍNEA DE TIEMPO
+       Eje central con puntos y fichas alternadas a cada lado
+       ============================================================ */
+    .tl {
+      position: relative;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    /* El eje vertical de la línea de tiempo */
+    .tl::before {
+      content: "";
+      position: absolute;
+      top: 6px;
+      bottom: 26px;
+      left: 50%;
+      margin-left: -1px;
+      width: 2px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--azul), var(--cian) 45%, var(--borde));
+      opacity: 0.55;
+    }
+
+    .tl__item {
+      position: relative;
+      width: 50%;
+      padding-bottom: 36px;
+    }
+
+    .tl__item:nth-child(odd)  { left: 0;   padding-right: 48px; text-align: right; }
+    .tl__item:nth-child(even) { left: 50%; padding-left: 48px;  text-align: left; }
+
+    /* Punto sobre el eje */
+    .tl__dot {
+      position: absolute;
+      top: 8px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--panel);
+      border: 3px solid var(--azul);
+      z-index: 1;
+    }
+
+    .tl__item:nth-child(odd) .tl__dot  { right: -12px; }
+    .tl__item:nth-child(even) .tl__dot { left: -12px; }
+
+    /* Entrada actual: punto relleno con el degradado vivo + halo */
+    .tl__item--now .tl__dot {
+      background: var(--grad);
+      border-color: var(--panel);
+      box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.2);
+    }
+
+    .tl__card {
+      background: var(--panel);
+      border: 1px solid var(--borde);
+      border-radius: 16px;
+      padding: 22px 24px;
+      box-shadow: 0 2px 10px rgba(17, 24, 39, 0.04);
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .tl__item:hover .tl__card {
+      border-color: rgba(29, 78, 216, 0.5);
+      box-shadow: 0 12px 30px rgba(29, 78, 216, 0.12);
+    }
+
+    .tl__when {
+      display: inline-block;
+      font-size: 0.78rem;
+      color: var(--suave);
+      background: var(--fondo);
+      border: 1px solid var(--borde);
+      border-radius: 999px;
+      padding: 4px 12px;
+      margin-bottom: 10px;
+    }
+
+    /* Fila actual: etiqueta con el degradado de marca */
+    .tl__item--now .tl__when {
+      background: var(--grad);
+      color: #fff;
+      border-color: transparent;
+      font-weight: 600;
+    }
+
+    .tl__co { font-size: 1.05rem; font-weight: 600; margin-bottom: 6px; }
+    .tl__role { color: var(--suave); font-size: 0.92rem; }
+
+    /* Aparición escalonada de las fichas */
+    .tl .animar:nth-child(2) { transition-delay: 0.08s; }
+    .tl .animar:nth-child(3) { transition-delay: 0.16s; }
+    .tl .animar:nth-child(4) { transition-delay: 0.24s; }
+
+    /* ============================================================
+       6. CONTACTO — PANEL OSCURO (25%, sección destacada)
+       ============================================================ */
+    .end {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      background: var(--oscuro);    /* azul noche de marca */
+      border-radius: 24px;
+      padding: 48px 44px;
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    /* Borde superior luminoso con el degradado vivo (5%) */
+    .end::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 2px;
+      background: var(--grad);
+    }
+
+    .end h2 {
+      font-size: clamp(1.6rem, 3.4vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .end p { color: var(--oscuro-suave); max-width: 480px; }
+
+    /* ============================================================
+       7. PIE — barra fina centrada estilo Vitor
+       ============================================================ */
+    footer {
+      background: var(--oscuro);
+      border-top: 1px solid var(--oscuro-borde);
+      padding: 26px 24px;
+      text-align: center;
+    }
+
+    .pie {
+      color: var(--suave);
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================================
+       VENTANA MODAL DE "COPIAR EMAIL"
+       Se abre centrada en pantalla, con fondo atenuado
+       ============================================================ */
+    .js-email { cursor: pointer; }
+
+    .email-pop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(22, 32, 58, 0.5);
+      backdrop-filter: blur(4px);
+    }
+
+    .email-pop__box {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      background: var(--panel);
+      border: 1px solid var(--borde);
+      border-radius: 22px;
+      padding: 42px 56px 40px;
+      box-shadow: 0 24px 60px rgba(17, 24, 39, 0.28);
+      text-align: center;
+      animation: aparece 0.22s ease;
+    }
+
+    @keyframes aparece {
+      from { transform: translateY(12px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    .email-pop__title {
+      font-size: 0.78rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--suave);
+    }
+
+    /* Fila con el correo + botoncito de copiar */
+    .email-pop__row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--fondo);
+      border: 1px solid var(--borde);
+      border-radius: 14px;
+      padding: 12px 12px 12px 20px;
+    }
+
+    .email-pop__dir {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 1.05rem;
+      color: var(--texto);
+    }
+
+    /* Botoncito con el icono típico de copiar */
+    .email-pop__copy {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--borde);
+      border-radius: 10px;
+      background: var(--panel);
+      color: var(--suave);
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .email-pop__copy:hover {
+      color: var(--azul);
+      border-color: var(--azul);
+      box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
+    }
+
+    .email-pop__copy .is-ok { color: #16A34A; }
+
+    .email-pop__copy svg { width: 19px; height: 19px; }
+
+    .email-pop__close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 30px;
+      height: 30px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--fondo);
+      color: var(--suave);
+      font-size: 0.85rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .email-pop__close:hover { color: var(--texto); }
+
+    /* ============================================================
+       8. ANIMACIONES AL HACER SCROLL
+       ============================================================ */
+    .animar {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .animar.visible { opacity: 1; transform: translateY(0); }
+
+    /* ============================================================
+       9. RESPONSIVE
+       ============================================================ */
+    @media (max-width: 860px) {
+      /* Timeline: el eje pasa al borde izquierdo y todo se apila en una columna */
+      .tl::before { left: 7px; margin-left: 0; }
+      .tl__item,
+      .tl__item:nth-child(odd),
+      .tl__item:nth-child(even) {
+        width: 100%;
+        left: 0;
+        padding: 0 0 30px 40px;
+        text-align: left;
+      }
+      .tl__item:nth-child(odd) .tl__dot,
+      .tl__item:nth-child(even) .tl__dot { left: -2px; right: auto; }
+
+      .end { flex-direction: column; text-align: center; padding: 40px 24px; }
+    }
+
+    /* Menú hamburguesa solo en móvil: en tablet los dos botones caben seguidos */
+    @media (max-width: 640px) {
+      .menu-btn { display: inline-block; }
+
+      .nav__list {
+        position: absolute;
+        top: 76px;
+        left: 20px; right: 20px;
+        flex-direction: column;
+        background: var(--oscuro);
+        border: 1px solid var(--oscuro-borde);
+        border-radius: 20px;
+        padding: 10px;
+        display: none;
+      }
+      .nav__list.abierto { display: flex; }
+      .nav__list a { padding: 12px 18px; text-align: left; }
+    }
+
+    /* Accesibilidad: menos movimiento si el usuario lo prefiere */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .animar { opacity: 1; transform: none; transition: none; }
+      .marca__punto { animation: none; }
+      .btn:hover, .card:hover { transform: none; }
+      .skills::after, .frame:hover img, .intro .name,
+      .intro .name::before, .intro .name::after { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ CIRCUITO DECORATIVO DE FONDO (pistas sutiles) ============ -->
+  <svg class="circuito" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <!-- Pistas neutras: entradas con giro, salidas, y un grupo de "pines" -->
+    <g class="traza" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M-20 52 H552" />
+      <path d="M300 52 V178" />
+      <path d="M-20 118 H222 a8 8 0 0 1 8 8 V292" />
+      <path d="M1460 84 H1248 a8 8 0 0 0 -8 8 V256" />
+      <path d="M-20 238 H176" />
+      <path d="M1460 470 H1240 a8 8 0 0 0 -8 8 V660" />
+      <path d="M1460 700 H1330" />
+      <path d="M-20 684 H138" />
+      <path d="M-20 698 H138" />
+      <path d="M-20 712 H138" />
+      <path d="M1460 858 H1226 a8 8 0 0 0 -8 8 V894" />
+    </g>
+
+    <!-- Pads circulares (contactos) al final de las pistas -->
+    <g class="traza" fill="currentColor" stroke="none">
+      <circle cx="560" cy="52" r="3.5" />
+      <circle cx="300" cy="186" r="3.5" />
+      <circle cx="230" cy="298" r="3.5" />
+      <circle cx="1240" cy="262" r="3.5" />
+      <circle cx="184" cy="238" r="3.5" />
+      <circle cx="1232" cy="666" r="3.5" />
+      <circle cx="1338" cy="700" r="3.5" />
+      <circle cx="146" cy="684" r="2.8" />
+      <circle cx="146" cy="698" r="2.8" />
+      <circle cx="146" cy="712" r="2.8" />
+      <circle cx="1218" cy="894" r="3.5" />
+    </g>
+  </svg>
+
+  <!-- ============ CABECERA (oscura, 25%) ============ -->
+  <header>
+    <div class="wrap barra">
+      <a class="marca" href="#inicio">
+        <span class="marca__txt">
+          <span class="marca__name">Juan Antonio Carrasco del Cid</span>
+          <span class="marca__loc">
+            <span class="marca__punto" aria-hidden="true"></span>
+            Sevilla, España · <span class="marca__ok">Disponible para proyectos</span>
+          </span>
+        </span>
+      </a>
+      <button class="menu-btn" id="menuBtn" aria-label="Abrir o cerrar el menú">☰</button>
+      <nav aria-label="Principal">
+        <ul class="nav__list" id="navList">
+          <li><a href="#sobre-mi">Sobre mí</a></li>
+          <li><a href="#contacto" class="nav__cta">Cuéntame tu proyecto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- ============ HERO — PRESENTACIÓN CENTRADA ============ -->
+    <section id="inicio">
+      <!-- Traza eléctrica decorativa dentro del hero: se desplaza con el contenido -->
+      <svg class="traza-hero" viewBox="0 0 1200 480" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="grad-traza-hero" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#1D4ED8" />
+            <stop offset="1" stop-color="#06B6D4" />
+          </linearGradient>
+        </defs>
+        <path d="M-20 220 H556 a10 10 0 0 1 10 10 V446" fill="none" stroke="url(#grad-traza-hero)" stroke-width="1.5" />
+        <circle cx="566" cy="452" r="4" fill="url(#grad-traza-hero)" />
+      </svg>
+      <div class="intro animar">
+        <figure class="frame">
+          <img src="foto-perfil.jpg?v=2" alt="Foto de Juan Antonio Carrasco del Cid" />
+        </figure>
+        <h1 class="name" data-text="Juan Antonio Carrasco del Cid">Juan Antonio Carrasco del Cid</h1>
+        <div class="sep" role="presentation"><span class="sep__gema"></span></div>
+        <p class="skills">iOS Engineer - Swift Developer - Mobile App Development</p>
+      </div>
+    </section>
+
+    <!-- ============ SOBRE MÍ ============ -->
+    <section class="sec" id="sobre-mi" style="padding-top: 56px;">
+      <h2 class="sec__head animar">Sobre mí</h2>
+      <p class="sec__say animar">Mi forma de entender el software.</p>
+      <div class="sobre animar">
+        <p>
+          Soy desarrollador iOS con más de 7 años de experiencia en el desarrollo de aplicaciones
+          móviles y soluciones de software. A lo largo de mi trayectoria he trabajado en proyectos
+          de gran envergadura en sectores como el bancario y el aeronáutico, participando en el
+          desarrollo de funcionalidades complejas y en la evolución de aplicaciones con altos
+          requisitos técnicos.
+        </p>
+        <p>
+          Mi experiencia combina el desarrollo de software con el liderazgo técnico de equipos, la
+          toma de decisiones de ingeniería y la colaboración con otros perfiles para transformar
+          requisitos de negocio en soluciones fiables y mantenibles. También he participado en
+          procesos de selección técnica, entrevistando y evaluando candidatos para incorporar
+          nuevos profesionales a los equipos de desarrollo según las necesidades de cada proyecto.
+        </p>
+        <p>
+          Entiendo el desarrollo de software como algo más que escribir código: implica comprender
+          el problema, elegir las soluciones adecuadas y <span class="destacado">cuidar cada
+          detalle para construir aplicaciones sólidas, eficientes y preparadas para
+          evolucionar</span>.
+        </p>
+        <p>
+          Mi objetivo es aportar experiencia, criterio técnico y una visión práctica a cada
+          proyecto, contribuyendo a crear software de calidad y a formar equipos capaces de
+          afrontar retos técnicos con garantías.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ QUÉ HAGO (claro, 70%) ============ -->
+    <section class="sec" id="hago">
+      <h2 class="sec__head animar">Qué hago</h2>
+      <p class="sec__say animar">Acompaño el desarrollo de aplicaciones iOS desde la implementación de funcionalidades hasta la toma de decisiones técnicas, combinando experiencia práctica, visión de ingeniería y atención a la calidad del software.</p>
+      <div class="cards">
+        <article class="card animar">
+          <span class="card__n" aria-hidden="true">
+            <!-- Icono de móvil -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+          </span>
+          <h3>Desarrollo iOS nativo</h3>
+          <p>Aplicaciones nativas con Swift, SwiftUI y UIKit: nuevas funcionalidades, pantallas complejas e integraciones con API REST listas para producción.</p>
+        </article>
+        <article class="card animar">
+          <span class="card__n" aria-hidden="true">
+            <!-- Icono de capas (arquitectura) -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          </span>
+          <h3>Arquitectura y calidad del software</h3>
+          <p>Busco soluciones técnicas bien fundamentadas, con especial atención a la organización del código, la mantenibilidad y la evolución del proyecto a largo plazo.</p>
+        </article>
+        <article class="card animar">
+          <span class="card__n" aria-hidden="true">
+            <!-- Icono de personas (liderazgo) -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          <h3>Liderazgo técnico</h3>
+          <p>Toma de decisiones de ingeniería, planificación técnica, revisiones de código y coordinación con equipos y clientes para garantizar una entrega continua.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ EXPERIENCIA — LÍNEA DE TIEMPO ============ -->
+    <section class="sec" id="experiencia">
+      <h2 class="sec__head animar">Experiencia</h2>
+      <p class="sec__say animar">Mi trayectoria profesional, de lo más reciente a lo más antiguo.</p>
+      <div class="tl">
+        <article class="tl__item tl__item--now animar">
+          <span class="tl__dot" aria-hidden="true"></span>
+          <div class="tl__card">
+            <span class="tl__when">Jul 2022 — Actualidad</span>
+            <h3 class="tl__co">Plexus Tech</h3>
+            <p class="tl__role">iOS Team Lead — liderazgo de una app en producción, migración de Objective-C a Swift, arquitectura modular, equipo de 2 desarrolladores y SCRUM.</p>
+          </div>
+        </article>
+        <article class="tl__item animar">
+          <span class="tl__dot" aria-hidden="true"></span>
+          <div class="tl__card">
+            <span class="tl__when">Proyecto personal</span>
+            <h3 class="tl__co">App de reservas para restaurantes</h3>
+            <p class="tl__role">Fundador y desarrollador iOS. Aplicación para descubrir y reservar mesa en restaurantes: mapa interactivo con geolocalización para encontrar los establecimientos cercanos, consulta de la carta, sistema de reservas y agenda de eventos publicados por cada restaurante para mantener informados a sus clientes.</p>
+          </div>
+        </article>
+        <article class="tl__item animar">
+          <span class="tl__dot" aria-hidden="true"></span>
+          <div class="tl__card">
+            <span class="tl__when">Ene 2022 — Jul 2022</span>
+            <h3 class="tl__co">Plexus Tech</h3>
+            <p class="tl__role">iOS Developer — nuevas funcionalidades en una importante app bancaria con UIKit (vistas por código) e integraciones REST.</p>
+          </div>
+        </article>
+        <article class="tl__item animar">
+          <span class="tl__dot" aria-hidden="true"></span>
+          <div class="tl__card">
+            <span class="tl__when">Ene 2021 — Jun 2021</span>
+            <h3 class="tl__co">NTT DATA (antes Everis)</h3>
+            <p class="tl__role">Junior iOS Developer — desarrollo de una app iOS en entorno de producción con Swift, UIKit y arquitectura VIPER.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ CONTACTO (oscuro, 25% — sección destacada) ============ -->
+    <section class="sec" id="contacto">
+      <div class="end animar">
+        <div>
+          <h2>Hablemos</h2>
+          <p>¿Tienes un proyecto entre manos o necesitas experiencia en desarrollo iOS? Cuéntame qué necesitas y busquemos la mejor manera de hacerlo realidad.</p>
+        </div>
+        <div class="acts" style="margin-bottom: 0;">
+          <a class="btn btn--grad js-email" href="mailto:delcid.dev@gmail.com">Enviar un email →</a>
+          <a class="btn btn--ghost" style="border-color: rgba(255, 255, 255, 0.2); color: #fff; background: rgba(255, 255, 255, 0.06);" href="tel:+34666666666">+34 666 66 66 66</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ PIE — copyright centrado ============ -->
+  <footer>
+    <p class="pie">Copyright © <span id="anio">2026</span> Juan Antonio Carrasco del Cid</p>
+  </footer>
+
+  <script>
+    // ===== Menú móvil =====
+    const menuBtn = document.getElementById('menuBtn');
+    const navList = document.getElementById('navList');
+    menuBtn.addEventListener('click', () => navList.classList.toggle('abierto'));
+    navList.addEventListener('click', () => navList.classList.remove('abierto'));
+
+    // ===== Animaciones al hacer scroll =====
+    const observador = new IntersectionObserver((entradas) => {
+      entradas.forEach((entrada) => {
+        if (!entrada.isIntersecting) return;
+        entrada.target.classList.add('visible');
+        observador.unobserve(entrada.target);
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.animar').forEach((el) => observador.observe(el));
+
+    // ===== Ventana modal de "copiar email" =====
+    const EMAIL = 'delcid.dev@gmail.com';
+    let emailPop = null;
+
+    function cerrarEmailPop() {
+      if (emailPop) { emailPop.remove(); emailPop = null; }
+    }
+
+    function abrirEmailPop() {
+      cerrarEmailPop();
+      const pop = document.createElement('div');
+      pop.className = 'email-pop';
+      pop.setAttribute('role', 'dialog');
+      pop.setAttribute('aria-modal', 'true');
+      pop.innerHTML =
+        '<div class="email-pop__box">' +
+        '  <button type="button" class="email-pop__close" aria-label="Cerrar">✕</button>' +
+        '  <p class="email-pop__title">Escríbeme a</p>' +
+        '  <div class="email-pop__row">' +
+        '    <span class="email-pop__dir">' + EMAIL + '</span>' +
+        '    <button type="button" class="email-pop__copy" aria-label="Copiar el email" title="Copiar el email">' +
+        '      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
+        '    </button>' +
+        '  </div>' +
+        '</div>';
+      document.body.appendChild(pop);
+      emailPop = pop;
+
+      pop.querySelector('.email-pop__close').addEventListener('click', cerrarEmailPop);
+
+      // Copiar al portapapeles (con respaldo para navegadores antiguos)
+      const copiar = pop.querySelector('.email-pop__copy');
+      copiar.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(EMAIL);
+        } catch {
+          const campo = document.createElement('textarea');
+          campo.value = EMAIL;
+          document.body.appendChild(campo);
+          campo.select();
+          document.execCommand('copy');
+          campo.remove();
+        }
+        copiar.classList.add('is-ok');
+        copiar.innerHTML =
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+        copiar.setAttribute('title', '¡Copiado!');
+        setTimeout(cerrarEmailPop, 1500);
+      });
+    }
+
+    document.querySelectorAll('.js-email').forEach((enlace) => {
+      enlace.addEventListener('click', (evento) => {
+        evento.preventDefault(); // que no arranque el gestor de correo directamente
+        if (emailPop) { cerrarEmailPop(); return; } // segundo clic = cerrar
+        abrirEmailPop();
+      });
+    });
+
+    // Cerrar la ventana con Escape o al hacer clic en el fondo atenuado
+    document.addEventListener('keydown', (evento) => {
+      if (evento.key === 'Escape') cerrarEmailPop();
+    });
+    document.addEventListener('click', (evento) => {
+      if (emailPop && evento.target === emailPop) cerrarEmailPop();
+    });
+
+    // ===== Año automático en el pie =====
+    document.getElementById('anio').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
