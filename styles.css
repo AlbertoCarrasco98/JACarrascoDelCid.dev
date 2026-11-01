@@ -296,15 +296,38 @@ header {
   border: 1px solid rgba(255, 255, 255, 0.30); /* borde resaltado */
   border-radius: 11px;
   transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s;
+  -webkit-tap-highlight-color: transparent; /* sin resplandor gris al tocar en móvil */
+}
+
+/* Al volver de una pestaña nueva (p. ej. GitHub) el botón no queda "marcado" */
+.ico:focus { outline: none; }
+
+/* El foco solo se dibuja para quien navega con teclado (accesibilidad) */
+.ico:focus-visible {
+  outline: 2px solid var(--azul);
+  outline-offset: 2px;
 }
 
 .ico svg { width: 18px; height: 18px; }
 
-.ico:hover {
+/* El efecto hover solo en dispositivos con puntero real: en pantallas
+   táctiles el estado hover "se queda pegado" tras pulsar y volver del enlace */
+@media (hover: hover) {
+  .ico:hover {
+    color: #fff;
+    border-color: var(--azul);
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+  }
+}
+
+/* Estado "presionado": feedback inmediato también en la pantalla del móvil,
+   donde no existe el efecto hover */
+.ico:active {
   color: #fff;
   border-color: var(--azul);
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.10);
+  transform: scale(0.92);
 }
 
 /* ============================================================
@@ -912,7 +935,7 @@ footer {
   html { scroll-behavior: auto; }
   .animar { opacity: 1; transform: none; transition: none; }
   .marca__punto { animation: none; }
-  .btn:hover, .card:hover { transform: none; }
+  .btn:hover, .card:hover, .ico:active { transform: none; }
   .skills::after, .frame:hover img, .intro .name,
   .intro .name::before, .intro .name::after { animation: none; }
 }
