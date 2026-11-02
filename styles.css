@@ -177,10 +177,30 @@ header {
 }
 
 .barra {
-  height: 72px;
+  /* Arranca grande y se compacta al hacer scroll (clase .compacto via JS) */
+  height: 96px;
+  transition: height 0.35s ease;
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+/* Tamaño normal de la barra una vez que la página se desplaza */
+header.compacto .barra {
+  height: 72px;
+}
+
+/* El nombre crece un punto en el estado grande y vuelve al original */
+.marca__name {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #fff;
+  font-size: 1.05rem;
+  transition: font-size 0.35s ease;
+}
+
+header.compacto .marca__name {
+  font-size: 0.95rem;
 }
 
 /* El menú se pega a la derecha; con el hamburguesa (menú absoluto) pasa igual */
@@ -197,13 +217,6 @@ header {
   flex-direction: column;
   gap: 2px;
   line-height: 1.35;
-}
-
-.marca__name {
-  font-weight: 600;
-  font-size: 0.95rem;
-  letter-spacing: -0.01em;
-  color: #fff;
 }
 
 /* Ubicación + disponibilidad, ahora en la cabecera */
@@ -901,9 +914,14 @@ footer {
   /* Botones del panel de Hablemos centrados en la vista de columna */
   .end .acts { justify-content: center; }
 
+  /* En móvil la barra grande es algo más contenida y el menú desplegable le sigue */
+  .barra { height: 88px; }
+  header.compacto .barra { height: 72px; }
+  .marca__name { font-size: 0.95rem; }
+
   .nav__list {
     position: absolute;
-    top: 76px;
+    top: 96px;
     left: 20px; right: 20px;
     flex-direction: column;
     background: var(--oscuro);
@@ -911,7 +929,9 @@ footer {
     border-radius: 20px;
     padding: 10px;
     display: none;
+    transition: top 0.35s ease;
   }
+  header.compacto .nav__list { top: 76px; }
   .nav__list.abierto { display: flex; }
   .nav__list a { padding: 12px 18px; text-align: left; }
 
@@ -936,6 +956,7 @@ footer {
   .animar { opacity: 1; transform: none; transition: none; }
   .marca__punto { animation: none; }
   .btn:hover, .card:hover, .ico:active { transform: none; }
+  .barra, .marca__name { transition: none; } /* el cambio de tamaño instantáneo */
   .skills::after, .frame:hover img, .intro .name,
   .intro .name::before, .intro .name::after { animation: none; }
 }

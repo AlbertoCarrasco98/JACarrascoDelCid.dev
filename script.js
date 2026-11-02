@@ -3,9 +3,10 @@
 // ------------------------------------------------------------
 // Indice:
 //   1. Menú móvil (abrir, cerrar, cerrar al tocar fuera)
-//   2. Animaciones al hacer scroll
-//   3. Ventanas modales (email, teléfono y Cuéntame tu proyecto)
-//   4. Año automático del pie
+//   2. Cabecera grande arriba e compacta al hacer scroll
+//   3. Animaciones al hacer scroll
+//   4. Ventanas modales (email, teléfono y Cuéntame tu proyecto)
+//   5. Año automático del pie
 // ============================================================
 // ===== Menú móvil =====
 const menuBtn = document.getElementById('menuBtn');
@@ -30,6 +31,18 @@ function quitarFocoDeIconos() {
 }
 window.addEventListener('pageshow', quitarFocoDeIconos);
 document.addEventListener('visibilitychange', quitarFocoDeIconos);
+
+// ===== Cabecera: grande arriba del todo, compacta en cuanto se hace scroll =====
+const cabecera = document.querySelector('header');
+
+function actualizarCabecera() {
+  // Con 24px de recorrido ya se compacta: nace un apelotonamiento y responde
+  cabecera.classList.toggle('compacto', window.scrollY > 24);
+}
+
+// requestAnimationFrame agrupa los disparos para no recalcular a cada píxel
+document.addEventListener('scroll', () => requestAnimationFrame(actualizarCabecera), { passive: true });
+actualizarCabecera(); // estado correcto si la página carga ya a medio desplazamiento
 
 // ===== Animaciones al hacer scroll =====
 const observador = new IntersectionObserver((entradas) => {
